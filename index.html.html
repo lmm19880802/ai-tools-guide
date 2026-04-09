@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工具速查卡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .tool-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .category-badge {
+            transition: all 0.2s ease;
+        }
+        .category-badge:hover {
+            transform: scale(1.05);
+        }
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .tag-ppt { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .tag-thinking { background: linear-gradient(135deg, #4834d4, #686de0); }
+        .tag-chat { background: linear-gradient(135deg, #00d2d3, #01a3a4); }
+        .tag-doc { background: linear-gradient(135deg, #5f27cd, #341f97); }
+        .tag-voice { background: linear-gradient(135deg, #10ac84, #1dd1a1); }
+        .tag-agent { background: linear-gradient(135deg, #f368e0, #ff9ff3); }
+        .tag-code { background: linear-gradient(135deg, #2c3e50, #34495e); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="gradient-bg text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold mb-2">🚀 AI工具速查卡</h1>
+                <p class="text-blue-100 text-lg">快速找到最适合你的AI工具</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative max-w-2xl">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="搜索工具名称、功能或适用场景..." 
+                    class="search-input w-full px-6 py-4 rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none text-lg"
+                >
+                <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200 py-4 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap gap-2 justify-center">
+            <button onclick="filterCategory('all')" class="category-badge px-4 py-2 rounded-full bg-gray-800 text-white text-sm font-medium hover:shadow-lg" data-category="all">
+                全部工具
+            </button>
+            <button onclick="filterCategory('思考分析')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-indigo-100" data-category="思考分析">
+                🤔 思考分析
+            </button>
+            <button onclick="filterCategory('通用对话')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-cyan-100" data-category="通用对话">
+                💬 通用对话
+            </button>
+            <button onclick="filterCategory('文档处理')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-purple-100" data-category="文档处理">
+                📄 文档处理
+            </button>
+            <button onclick="filterCategory('PPT制作')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-red-100" data-category="PPT制作">
+                🎬 PPT制作
+            </button>
+            <button onclick="filterCategory('语音处理')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-emerald-100" data-category="语音处理">
+                🎤 语音处理
+            </button>
+            <button onclick="filterCategory('智能体开发')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-pink-100" data-category="智能体开发">
+                🤖 智能体开发
+            </button>
+            <button onclick="filterCategory('编程助手')" class="category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-slate-100" data-category="编程助手">
+                💻 编程助手
+            </button>
+        </div>
+    </div>
+
+    <!-- Tools Grid -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+        <div id="noResults" class="hidden text-center py-20">
+            <div class="text-6xl mb-4">🔍</div>
+            <p class="text-gray-500 text-lg">没有找到匹配的工具</p>
+        </div>
+    </div>
+
+    <script>
+        const tools = [
+            {
+                name: "DeepSeek",
+                url: "deepseek.com",
+                bestFor: "深度思考、复杂文档",
+                features: "深度思考模式（R1）",
+                category: "思考分析",
+                icon: "🧠",
+                color: "tag-thinking"
+            },
+            {
+                name: "豆包",
+                url: "doubao.com",
+                bestFor: "日常问答、创意写作",
+                features: "语音输入、多轮对话",
+                category: "通用对话",
+                icon: "🌱",
+                color: "tag-chat"
+            },
+            {
+                name: "Kimi",
+                url: "kimi.moonshot.cn",
+                bestFor: "长文档分析（200万字）",
+                features: "网页总结、批量处理",
+                category: "文档处理",
+                icon: "🌙",
+                color: "tag-doc"
+            },
+            {
+                name: "Kimi PPT",
+                url: "kimi.com/slides",
+                bestFor: "长文档转PPT",
+                features: "扔PDF直接出幻灯片",
+                category: "PPT制作",
+                icon: "📊",
+                color: "tag-ppt"
+            },
+            {
+                name: "Gamma",
+                url: "gamma.design/ai-presentation",
+                bestFor: "设计感提案/融资路演",
+                features: "输入主题全自动生成",
+                category: "PPT制作",
+                icon: "γ",
+                color: "tag-ppt"
+            },
+            {
+                name: "讯飞智文",
+                url: "zhiwen.xfyun.cn",
+                bestFor: "演讲PPT+演练",
+                features: "智能演练+AI数字人",
+                category: "PPT制作",
+                icon: "🎙️",
+                color: "tag-ppt"
+            },
+            {
+                name: "NotebookLM",
+                url: "notebooklm.google.com",
+                bestFor: "研究溯源PPT",
+                features: "多文档整合带引用导出",
+                category: "PPT制作",
+                icon: "📓",
+                color: "tag-ppt"
+            },
+            {
+                name: "百度文库PPT",
+                url: "wenku.baidu.com",
+                bestFor: "中文模板快速出稿",
+                features: "18亿模板库",
+                category: "PPT制作",
+                icon: "📚",
+                color: "tag-ppt"
+            },
+            {
+                name: "Beautiful.ai",
+                url: "beautiful.ai",
+                bestFor: "智能排版保底",
+                features: "自动对齐配色，零设计基础",
+                category: "PPT制作",
+                icon: "✨",
+                color: "tag-ppt"
+            },
+            {
+                name: "WPS AI",
+                url: "wps.cn",
+                bestFor: "国产办公兼容",
+                features: "原生Office生态无缝衔接",
+                category: "PPT制作",
+                icon: "🗂️",
+                color: "tag-ppt"
+            },
+            {
+                name: "DeepVo.AI",
+                url: "deepvo.ai/transcribe/",
+                bestFor: "语音转文字",
+                features: "多语言语音转写+会议总结+自动思维导图生成",
+                category: "语音处理",
+                icon: "🎤",
+                color: "tag-voice"
+            },
+            {
+                name: "讯飞听见",
+                url: "www.iflyrec.com/zhuanwenzi.html",
+                bestFor: "语音转文字",
+                features: "区分说话人",
+                category: "语音处理",
+                icon: "👂",
+                color: "tag-voice"
+            },
+            {
+                name: "扣子Coze",
+                url: "coze.cn",
+                bestFor: "搭建智能体",
+                features: "零代码、插件丰富",
+                category: "智能体开发",
+                icon: "🤖",
+                color: "tag-agent"
+            },
+            {
+                name: "Cursor",
+                url: "cursor.com",
+                bestFor: "AI原生代码编辑器",
+                features: "基于VS Code构建，集成GPT-4、Claude等大模型，支持智能代码补全、多文件编辑、自然语言编程",
+                category: "编程助手",
+                icon: "🎯",
+                color: "tag-code"
+            },
+            {
+                name: "DeepV Code",
+                url: "dvcode.deepvlab.ai",
+                bestFor: "AI编程助手（专业级）",
+                features: "AI驱动的智能编程助手，集成Claude智能，支持代码分析、版本回滚、多设备同步，适合专业开发者和团队",
+                category: "编程助手",
+                icon: "⚡",
+                color: "tag-code"
+            },
+            {
+                name: "VS Code",
+                url: "code.visualstudio.com/Download",
+                bestFor: "开源代码编辑器（基础）",
+                features: "微软开发的免费开源编辑器，轻量级但功能强大，拥有丰富的扩展生态",
+                category: "编程助手",
+                icon: "📝",
+                color: "tag-code"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let searchTerm = '';
+
+        function getCategoryColor(category) {
+            const colors = {
+                '思考分析': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                '通用对话': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+                '文档处理': 'bg-purple-100 text-purple-800 border-purple-200',
+                'PPT制作': 'bg-red-100 text-red-800 border-red-200',
+                '语音处理': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                '智能体开发': 'bg-pink-100 text-pink-800 border-pink-200',
+                '编程助手': 'bg-slate-100 text-slate-800 border-slate-200'
+            };
+            return colors[category] || 'bg-gray-100 text-gray-800';
+        }
+
+        function renderTools() {
+            const grid = document.getElementById('toolsGrid');
+            const noResults = document.getElementById('noResults');
+
+            const filtered = tools.filter(tool => {
+                const matchCategory = currentCategory === 'all' || tool.category === currentCategory;
+                const matchSearch = !searchTerm || 
+                    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    tool.bestFor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    tool.features.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    tool.category.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = filtered.map((tool, index) => {
+                const displayUrl = tool.url.replace(/^https:\/\//, '');
+                return `
+                <div class="tool-card glass-card rounded-2xl p-6 animate-fade-in" style="animation-delay: ${index * 0.05}s">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center text-2xl shadow-lg text-white">
+                                ${tool.icon}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">${tool.name}</h3>
+                                <span class="text-xs px-2 py-1 rounded-full border ${getCategoryColor(tool.category)}">
+                                    ${tool.category}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <p class="text-xs text-blue-600 font-semibold mb-1">🎯 最适合</p>
+                            <p class="text-sm text-gray-700">${tool.bestFor}</p>
+                        </div>
+
+                        <div class="bg-purple-50 rounded-lg p-3">
+                            <p class="text-xs text-purple-600 font-semibold mb-1">✨ 特色功能</p>
+                            <p class="text-sm text-gray-700">${tool.features}</p>
+                        </div>
+                    </div>
+
+                    <a href="https://${tool.url}" target="_blank" 
+                       class="mt-4 block w-full text-center bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 group">
+                        访问网站
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+
+                    <p class="mt-2 text-xs text-gray-400 text-center truncate">${displayUrl}</p>
+                </div>
+            `}).join('');
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+
+            // Update button styles
+            document.querySelectorAll('.category-badge').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.remove('bg-gray-200', 'text-gray-700');
+                    btn.classList.add('bg-gray-800', 'text-white');
+                } else {
+                    btn.classList.remove('bg-gray-800', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+
+            renderTools();
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderTools();
+        });
+
+        // Initial render
+        renderTools();
+    </script>
+</body>
+</html>
